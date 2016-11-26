@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Collections;
 import java.util.InputMismatchException;
+// import java.util.Collections;
 
 // class Movement implements Comparable<Movement> {
 class Movement {
@@ -46,15 +46,17 @@ class Movement {
     // }
 }
 
-class Input {
-    public static int catchInteger() {
-        System.out.print("Digite a quantidade de  discos: ");
-        Scanner input = new Scanner(System.in);
+
+
+class HanoiKeyboardInput {
+    public int catchInteger() {
+        Input input = new Input();
+        String stringIn = input.keyboard("Digite a quantidade de  discos: ");
         int intInput = 0;
 
         try {
-            intInput = input.nextInt();
-        } catch(InputMismatchException e) {
+            intInput = Integer.parseInt(stringIn);
+        } catch(NumberFormatException e) {
             System.out.println("Entrada inválida!");
             catchInteger();
         }
@@ -112,20 +114,6 @@ class HanoiTower {
 
         toRod.add(fromRod.get(0));
         fromRod.remove(fromRod.get(0));
-
-
-
-       // } else {
-       //      for (int i = pos; i <= maxP; i += intervalos) {
-       //          Movement movement = new Movement(i, sequenciaPares[index]);
-       //          movementsList.add(movement);
-       //          index++;
-
-       //          if(index > 2){
-       //              index = 0;
-       //          }
-       //      }
-       // }
     }
 
     public ArrayList<Movement> movements() {
@@ -137,57 +125,57 @@ class HanoiTower {
         int step = 1;
 
         // if discsCount is pair
-        if (discsCount % 2 == 0) {
-            // while(step < movimentsCount) {
-                if (startRod.size() == discsCount) {
-                    // qualquer coisa fazer um método para eleger para onde vai
-                    currentRod = auxRod;
-                    move(step, "A-->B", startRod, auxRod);
-                } else () {
-                    currentRod = targetRod;
-                    move(step, "A-->C", startRod, targetRod);
-                } else () {
-                    currentRod = targetRod;
-                    move(step, "B-->C", auxRod, targetRod);
-                } else () {
-                    currentRod = startRod;
-                    move(step, "B-->A", auxRod, startRod);
-                } else () {
-                    currentRod = auxRod;
-                    move(step, "C-->B", targetRod, auxRod);
-                } else () {
-                    currentRod = startRod;
-                    move(step, "C-->A", targetRod, startRod);
-                }
+        // if (discsCount % 2 == 0) {
+        //     // while(step < movimentsCount) {
+        //         if (startRod.size() == discsCount) {
+        //             // qualquer coisa fazer um método para eleger para onde vai
+        //             currentRod = auxRod;
+        //             move(step, "A-->B", startRod, auxRod);
+        //         } else () {
+        //             currentRod = targetRod;
+        //             move(step, "A-->C", startRod, targetRod);
+        //         } else () {
+        //             currentRod = targetRod;
+        //             move(step, "B-->C", auxRod, targetRod);
+        //         } else () {
+        //             currentRod = startRod;
+        //             move(step, "B-->A", auxRod, startRod);
+        //         } else () {
+        //             currentRod = auxRod;
+        //             move(step, "C-->B", targetRod, auxRod);
+        //         } else () {
+        //             currentRod = startRod;
+        //             move(step, "C-->A", targetRod, startRod);
+        //         }
 
-                step += 1;
-            // }
+        //         step += 1;
+        //     // }
 
-        // if discsCount is odd
-        } else {
-            // while(targetRod.size() < discsCount) {
-                if (startRod.size() == discsCount) {
-                    currentRod = auxRod;
-                    move(step, "A-->C", startRod, targetRod);
-                } else () {
-                    currentRod = targetRod;
-                    move(step, "A-->B", startRod, auxRod);
-                } else () {
-                    currentRod = targetRod;
-                    move(step, "B-->C", auxRod, targetRod);
-                } else () {
-                    currentRod = startRod;
-                    move(step, "B-->A", auxRod, startRod);
-                } else () {
-                    currentRod = auxRod;
-                    move(step, "C-->B", targetRod, auxRod);
-                } else () {
-                    currentRod = startRod;
-                    move(step, "C-->A", targetRod, startRod);
-                }
-                step += 1;
-            // }
-        }
+        // // if discsCount is odd
+        // } else {
+        //     // while(targetRod.size() < discsCount) {
+        //         if (startRod.size() == discsCount) {
+        //             currentRod = auxRod;
+        //             move(step, "A-->C", startRod, targetRod);
+        //         } else () {
+        //             currentRod = targetRod;
+        //             move(step, "A-->B", startRod, auxRod);
+        //         } else () {
+        //             currentRod = targetRod;
+        //             move(step, "B-->C", auxRod, targetRod);
+        //         } else () {
+        //             currentRod = startRod;
+        //             move(step, "B-->A", auxRod, startRod);
+        //         } else () {
+        //             currentRod = auxRod;
+        //             move(step, "C-->B", targetRod, auxRod);
+        //         } else () {
+        //             currentRod = startRod;
+        //             move(step, "C-->A", targetRod, startRod);
+        //         }
+        //         step += 1;
+        //     // }
+        // }
 
     }
 
@@ -196,19 +184,21 @@ class HanoiTower {
 
 class Main {
     public static void main(String[] args) {
-        int discsCount = Input.catchInteger();
+        HanoiKeyboardInput input = new HanoiKeyboardInput();
+        int discsCount = input.catchInteger();
+        // System.out.println(discsCount);
         HanoiTower h = new HanoiTower(discsCount);
-        h.run();
+        // h.run();
 
-        // ArrayList<Movement> movementCollection = new ArrayList<Movement>();
-        // movementCollection = h.movements();
+        // // ArrayList<Movement> movementCollection = new ArrayList<Movement>();
+        // // movementCollection = h.movements();
 
-        // // Collections.sort(movementCollection);
+        // // // Collections.sort(movementCollection);
 
-        // // for (Movement movement : movementCollection) {
-        for (Movement movement : h.movements()) {
-            System.out.println("Movimento " + movement
-                               .step() + ": " + movement.direction());
-        }
+        // // // for (Movement movement : movementCollection) {
+        // for (Movement movement : h.movements()) {
+        //     System.out.println("Movimento " + movement
+        //                        .step() + ": " + movement.direction());
+        // }
     }
 }
