@@ -65,7 +65,7 @@ class HanoiTower {
     private ArrayList<Integer> startRod = new ArrayList<Integer>();
     private ArrayList<Integer> auxRod = new ArrayList<Integer>();
     private ArrayList<Integer> targetRod = new ArrayList<Integer>();
-    private ArrayList<Integer> currentRod = new ArrayList<Integer>();
+    private ArrayList<Integer> currentRod = startRod;
 
     private ArrayList<Movement> movementsList = new ArrayList<Movement>();
 
@@ -99,13 +99,11 @@ class HanoiTower {
         }
 
         toRod.add(fromRod.get(0));
+        currentRod = toRod;
+
         fromRod.remove(fromRod.get(0));
         Movement movement = new Movement(step, toRod.get(0), from, to);
         movementsList.add(movement);
-    }
-
-    public ArrayList<Movement> movements() {
-        return movementsList;
     }
 
     private int resolveSmallerDiscIndex (int discIndex1, int discIndex2) {
@@ -172,32 +170,50 @@ class HanoiTower {
 
     }
 
+    public ArrayList<Movement> movements() {
+        return movementsList;
+    }
+
     public void run() {
+        int discIndex = 1;
+        int indexFrom = 0;
+        int indexTo = 0;
+        int from[] = new int[3];
+        int to[] = new int[3];
+
+
         prepare();
 
-        currentRod = startRod;
         // first movement
         // if discsCount is odd
         if (discsCount % 2 != 0) {
-            move(1, 1, oddRods[0], oddRods[2]);
+            from = oddRods;
+            to = oddRods;
+            move(1, discIndex, oddRods[0], oddRods[2]);
+        // if discsCount is pair
         } else {
-            move(1, 1, pairRods[0], pairRods[2]);
+            from = pairRods;
+            to = pairRods;
+            move(1, discIndex, pairRods[0], pairRods[2]);
         }
 
         for (int step = 2; i <= movimentsCount; i++) {
-            switch (currentRod) {
-                // case startRod: ...;
-                //     break;
-                // case auxRod: ...;
-                //     break;
-                // default: ...;
+            discIndex = resolveDiskIndex(currentRod);
+
+            if (discIndex % 2 != 0) {
+                indexFrom = (step - 1)%3;
+                indexTo = (step + 1)%3;
+            } else {
+                indexFrom = (step + 1)%3;
+                indexTo = (step - 1)%3;
             }
+
+            move(step, discIndex, from[indexFrom], to[indexTo]);
         }
 
     }
 
 }
-
 
 class Main {
     public static void main(String[] args) {
