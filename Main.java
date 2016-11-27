@@ -1,51 +1,36 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.InputMismatchException;
-// import java.util.Collections;
 
-// class Movement implements Comparable<Movement> {
 class Movement {
     // private Integer index;
     private Integer step;
-    private String direction;
+    private Integer from;
+    private Integer to;
 
     // constructor
-    // Movement(int index, String direction) {
-    Movement(int step, String direction) {
-        // setIndex(index);
-        setStep(step);
-        setMovement(direction);
+    Movement(int step, int disc, char from, char to) {
+        this.step = step;
+        this.step = disc;
+        this.from = from;
+        this.to = to;
     }
-
-    // private void setIndex (int number) {
-    //     this.index = number;
-    // }
-
-    private void setStep (int number) {
-        this.step = number;
-    }
-
-    private void setMovement (String direction) {
-        this.direction = direction;
-    }
-
-    // public int index() {
-    //     return this.index;
-    // }
 
     public int step() {
         return this.step;
     }
 
-    public String direction() {
-        return this.direction;
+    public String from() {
+        return this.from;
     }
 
-    // public int compareTo(Movement disc) {
-    //     return this.index.compareTo(disc.index);
-    // }
-}
+    public String to() {
+        return this.to;
+    }
 
+    public String disc() {
+        return this.disc;
+    }
+}
 
 
 class HanoiKeyboardInput {
@@ -72,22 +57,17 @@ class HanoiTower {
         this.discsCount = discsCount;
     }
 
-    // private String possibleMovements[] = {
-    //     "A-->B",
-    //     "A-->C",
-    //     "B-->A",
-    //     "B-->C",
-    //     "C-->B",
-    //     "C-->A"
-    // };
-
     private Integer movimentsCount = (int) Math.pow(2, discsCount) - 1;
+
+    private char oddRods[] = {"A", "B", "C"};
+    private char pairRods[] = {"A", "C", "B"};
+
     private ArrayList<Integer> startRod = new ArrayList<Integer>();
     private ArrayList<Integer> auxRod = new ArrayList<Integer>();
     private ArrayList<Integer> targetRod = new ArrayList<Integer>();
     private ArrayList<Integer> currentRod = new ArrayList<Integer>();
+
     private ArrayList<Movement> movementsList = new ArrayList<Movement>();
-    private int disc = 1;
 
     private void prepare() {
         for (int i = 0; i < discsCount; i++) {
@@ -95,87 +75,124 @@ class HanoiTower {
         }
     }
 
-    // private String sequenciaImpares[] = {"A-->C", "C-->B", "B-->A"};
-    // private String sequenciaPares[] = {"A-->B", "B-->C", "C-->A"};
+    // private void move(int step, int disc, ArrayList<Integer> from,
+    //                   ArrayList<Integer> to) {
 
-    // private void move(int pos, int intervalos, int maxP, int y) {
-    // private void move(int pos, int intervalos, int maxP, int y) {
-    // private void movePair(int movimentsCount) {
-    // private void moveWhenPair(int step, String direction, ArrayList<Integer> fromRod,
-    private void move(int step, String direction, ArrayList<Integer> fromRod,
-                          ArrayList<Integer> toRod) {
-        // int index = 0;
+    private void move(int step, char from, char to) {
+        ArrayList<Integer> toRod = new ArrayList<Integer>();
+        ArrayList<Integer> fromRod = new ArrayList<Integer>();
 
-        // for (int i = pos; i <= maxP; i += intervalos) {
-        // move from A to B
+        switch (to) {
+            case "A": toRod = startRod;
+                break;
+            case "B": toRod = auxRod;
+                break;
+            default: toRod = targetRod;
+        }
 
-        Movement movement = new Movement(step, direction);
-        movementsList.add(movement);
+        switch (from) {
+            case "A": fromRod = startRod;
+                break;
+            case "B": fromRod = auxRod;
+                break;
+            default: fromRod = targetRod;
+        }
 
         toRod.add(fromRod.get(0));
         fromRod.remove(fromRod.get(0));
+        Movement movement = new Movement(step, toRod.get(0), from, to);
+        movementsList.add(movement);
     }
 
     public ArrayList<Movement> movements() {
         return movementsList;
     }
 
+    private int resolveSmallerDiscIndex (int discIndex1, int discIndex2) {
+        if (discIndex1 < discIndex2) {
+            return discIndex1;
+        } else {
+            return discIndex2;
+        }
+    }
+
+    private int resolveDiskIndex (ArrayList<Integer> currentRod) {
+        int discIndex1  = 0;
+        int discIndex2  = 0;
+
+        switch (currentRod) {
+            case startRod: {
+                try {
+                    discIndex1 = auxRod.get(0);
+                } catch (NullPointerException e) {
+                    return targetRod.get(0);
+                }
+
+                try {
+                    discIndex2 = targetRod.get(0);
+                } catch (NullPointerException e) {
+                    return auxRod.get(0);
+                }
+
+                return resolveSmallerDiscIndex(auxRod.get(0), targetRod.get(0));
+            }
+            case auxRod: {
+                try {
+                    discIndex1 = startRod.get(0);
+                } catch (NullPointerException e) {
+                    return targetRod.get(0);
+                }
+
+                try {
+                    discIndex2 = targetRod.get(0);
+                } catch (NullPointerException e) {
+                    return startRod.get(0);
+                }
+
+                return resolveSmallerDiscIndex(startRod.get(0),
+                                               targetRod.get(0));
+            }
+            default: {
+                try {
+                    discIndex1 = startRod.get(0);
+                } catch (NullPointerException e) {
+                    return auxRod.get(0);
+                }
+
+                try {
+                    discIndex2 = auxRod.get(0);
+                } catch (NullPointerException e) {
+                    return startRod.get(0);
+                }
+
+                return resolveSmallerDiscIndex(startRod.get(0), auxRod.get(0));
+            }
+        }
+
+
+    }
+
     public void run() {
         prepare();
-        int step = 1;
 
-        // if discsCount is pair
-        // if (discsCount % 2 == 0) {
-        //     // while(step < movimentsCount) {
-        //         if (startRod.size() == discsCount) {
-        //             // qualquer coisa fazer um método para eleger para onde vai
-        //             currentRod = auxRod;
-        //             move(step, "A-->B", startRod, auxRod);
-        //         } else () {
-        //             currentRod = targetRod;
-        //             move(step, "A-->C", startRod, targetRod);
-        //         } else () {
-        //             currentRod = targetRod;
-        //             move(step, "B-->C", auxRod, targetRod);
-        //         } else () {
-        //             currentRod = startRod;
-        //             move(step, "B-->A", auxRod, startRod);
-        //         } else () {
-        //             currentRod = auxRod;
-        //             move(step, "C-->B", targetRod, auxRod);
-        //         } else () {
-        //             currentRod = startRod;
-        //             move(step, "C-->A", targetRod, startRod);
-        //         }
+        currentRod = startRod;
+        // first movement
+        // if discsCount is odd
+        if (discsCount % 2 != 0) {
+            move(1, 1, oddRods[0], oddRods[2]);
+        } else {
+            move(1, 1, pairRods[0], pairRods[2]);
+        }
 
-        //         step += 1;
-        //     // }
-
-        // // if discsCount is odd
-        // } else {
-        //     // while(targetRod.size() < discsCount) {
-        //         if (startRod.size() == discsCount) {
-        //             currentRod = auxRod;
-        //             move(step, "A-->C", startRod, targetRod);
-        //         } else () {
-        //             currentRod = targetRod;
-        //             move(step, "A-->B", startRod, auxRod);
-        //         } else () {
-        //             currentRod = targetRod;
-        //             move(step, "B-->C", auxRod, targetRod);
-        //         } else () {
-        //             currentRod = startRod;
-        //             move(step, "B-->A", auxRod, startRod);
-        //         } else () {
-        //             currentRod = auxRod;
-        //             move(step, "C-->B", targetRod, auxRod);
-        //         } else () {
-        //             currentRod = startRod;
-        //             move(step, "C-->A", targetRod, startRod);
-        //         }
-        //         step += 1;
-        //     // }
-        // }
+        for (int step = 2; i <= movimentsCount; i++) {
+            switch (currentRod) {
+                // case startRod: ...;
+                //     break;
+                // case auxRod: ...;
+                //     break;
+                // default: ...;
+            }
+        }
 
     }
 
@@ -186,19 +203,14 @@ class Main {
     public static void main(String[] args) {
         HanoiKeyboardInput input = new HanoiKeyboardInput();
         int discsCount = input.catchInteger();
-        // System.out.println(discsCount);
         HanoiTower h = new HanoiTower(discsCount);
-        // h.run();
+        h.run();
 
-        // // ArrayList<Movement> movementCollection = new ArrayList<Movement>();
-        // // movementCollection = h.movements();
-
-        // // // Collections.sort(movementCollection);
-
-        // // // for (Movement movement : movementCollection) {
-        // for (Movement movement : h.movements()) {
-        //     System.out.println("Movimento " + movement
-        //                        .step() + ": " + movement.direction());
-        // }
+        for (Movement movement : h.movements()) {
+            System.out.println("Movimento " + movement.step() + ": " +
+                               "mova o disco " + movement.disc() +
+                               " da haste " + movement.from() +
+                               " para a haste " + movement.to();
+        }
     }
 }
