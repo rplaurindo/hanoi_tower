@@ -3,15 +3,15 @@ import java.util.ArrayList;
 class Movement {
     private Integer step = 1;
     private Integer disc = 1;
-    private Character from = 'A';
-    private Character to = 'A';
+    private Character origin = 'A';
+    private Character destination = 'A';
 
     // constructor
-    Movement(int step, int disc, Character from, Character to) {
+    Movement(int step, int discIndex, Character origin, Character destination) {
         this.step = step;
-        this.disc = disc;
-        this.from = from;
-        this.to = to;
+        this.disc = discIndex;
+        this.origin = origin;
+        this.destination = destination;
     }
 
     public int step() {
@@ -22,12 +22,12 @@ class Movement {
         return this.disc;
     }
 
-    public Character from() {
-        return this.from;
+    public Character origin() {
+        return this.origin;
     }
 
-    public Character to() {
-        return this.to;
+    public Character destination() {
+        return this.destination;
     }
 }
 
@@ -74,32 +74,32 @@ class HanoiTower {
         }
     }
 
-    private void move(int step, int discIndex, char from, char to) {
-        ArrayList<Integer> toRod = new ArrayList<Integer>();
-        ArrayList<Integer> fromRod = new ArrayList<Integer>();
+    private void move(int step, int discIndex, char origin, char destination) {
+        ArrayList<Integer> destinationRod = new ArrayList<Integer>();
+        ArrayList<Integer> originRod = new ArrayList<Integer>();
 
-        switch (from) {
-            case 'A': fromRod = startRod;
+        switch (origin) {
+            case 'A': originRod = startRod;
                 break;
-            case 'B': fromRod = auxRod;
+            case 'B': originRod = auxRod;
                 break;
-            default: fromRod = targetRod;
+            default: originRod = targetRod;
         }
 
-        switch (to) {
-            case 'A': toRod = startRod;
+        switch (destination) {
+            case 'A': destinationRod = startRod;
                 break;
-            case 'B': toRod = auxRod;
+            case 'B': destinationRod = auxRod;
                 break;
-            default: toRod = targetRod;
+            default: destinationRod = targetRod;
         }
 
-        toRod.add(0, fromRod.get(0));
-        currentRod = toRod;
+        destinationRod.add(0, originRod.get(0));
+        currentRod = destinationRod;
 
-        fromRod.remove(fromRod.get(0));
+        originRod.remove(originRod.get(0));
 
-        Movement movement = new Movement(step, discIndex, from, to);
+        Movement movement = new Movement(step, discIndex, origin, destination);
         movementsList.add(movement);
     }
 
@@ -149,10 +149,10 @@ class HanoiTower {
 
     public void run() {
         int discIndex = 1;
-        int indexFrom = 0;
-        int indexTo = 0;
-        Character from[] = new Character[3];
-        Character to[] = new Character[3];
+        int originIndex = 0;
+        int destinationIndex = 0;
+        Character origin[] = new Character[3];
+        Character destination[] = new Character[3];
 
         prepare();
 
@@ -164,13 +164,13 @@ class HanoiTower {
         // first movement
         // if discsCount is odd
         if (discsCount % 2 != 0) {
-            from = oddRods;
-            to = oddRods;
+            origin = oddRods;
+            destination = oddRods;
             move(1, discIndex, oddRods[0], oddRods[2]);
         // if discsCount is pair
         } else {
-            from = pairRods;
-            to = pairRods;
+            origin = pairRods;
+            destination = pairRods;
             move(1, discIndex, pairRods[0], pairRods[2]);
         }
 
@@ -180,11 +180,11 @@ class HanoiTower {
             discIndex = resolveDiscIndex(currentRod);
 
             if (discIndex % 2 != 0) {
-                indexFrom = (step - 1)%3;
-                indexTo = (step + 1)%3;
+                originIndex = (step - 1)%3;
+                destinationIndex = (step + 1)%3;
             } else {
-                indexFrom = (step + 1)%3;
-                indexTo = (step - 1)%3;
+                originIndex = (step + 1)%3;
+                destinationIndex = (step - 1)%3;
             }
 
             // System.out.println("Start rod: " + startRod);
@@ -192,7 +192,8 @@ class HanoiTower {
             // System.out.println("Target rod: " + targetRod);
             // System.out.println("Step: " + step);
 
-            move(step, discIndex, from[indexFrom], to[indexTo]);
+            move(step, discIndex, origin[originIndex],
+                 destination[destinationIndex]);
         }
 
         // System.out.println("Start rod: " + startRod);
@@ -212,8 +213,8 @@ class Main {
         for (Movement movement : h.movements()) {
             System.out.println("Movimento " + movement.step() + ": " +
                                "mova o disco " + movement.disc() +
-                               " da haste " + movement.from() +
-                               " para a haste " + movement.to()
+                               " da haste " + movement.origin() +
+                               " para a haste " + movement.destination()
                                );
         }
     }
