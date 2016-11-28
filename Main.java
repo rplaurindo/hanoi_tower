@@ -113,9 +113,6 @@ class HanoiTower {
     }
 
     private int resolveDiscIndex (ArrayList<Integer> currentRod) {
-        // int discIndex1  = 0;
-        // int discIndex2  = 0;
-
         if (currentRod == startRod) {
             if (auxRod.size() == 0) {
                 return targetRod.get(0);
@@ -160,6 +157,11 @@ class HanoiTower {
 
         prepare();
 
+        // System.out.println("Start rod: " + startRod);
+        // System.out.println("Auxiliary rod: " + auxRod);
+        // System.out.println("Target rod: " + targetRod);
+        // System.out.println("Step 1");
+
         // first movement
         // if discsCount is odd
         if (discsCount % 2 != 0) {
@@ -186,9 +188,17 @@ class HanoiTower {
                 indexTo = (step - 1)%3;
             }
 
+            // System.out.println("Start rod: " + startRod);
+            // System.out.println("Auxiliary rod: " + auxRod);
+            // System.out.println("Target rod: " + targetRod);
+            // System.out.println("Step: " + step);
+
             move(step, discIndex, from[indexFrom], to[indexTo]);
         }
 
+        // System.out.println("Start rod: " + startRod);
+        // System.out.println("Auxiliary rod: " + auxRod);
+        // System.out.println("Target rod: " + targetRod);
     }
 
 }
