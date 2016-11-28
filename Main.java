@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class Movement {
-    // private Integer index;
     private Integer step = 1;
     private Integer disc = 1;
     private Character from = 'A';
@@ -76,7 +75,6 @@ class HanoiTower {
         }
     }
 
-    // private void move(int step, char from, char to) {
     private void move(int step, int discIndex, char from, char to) {
         ArrayList<Integer> toRod = new ArrayList<Integer>();
         ArrayList<Integer> fromRod = new ArrayList<Integer>();
@@ -97,13 +95,8 @@ class HanoiTower {
             default: toRod = targetRod;
         }
 
-        // System.out.println(from);
-        // System.out.println(fromRod.get(0));
-
         toRod.add(0, fromRod.get(0));
         currentRod = toRod;
-        // System.out.println(currentRod);
-
 
         fromRod.remove(fromRod.get(0));
 
@@ -124,18 +117,12 @@ class HanoiTower {
         // int discIndex2  = 0;
 
         if (currentRod == startRod) {
-
-            // if (auxRod.size() == 0 && targetRod.size() == 0) {
-            //     return currentRod.
-            // }
-
-            // System.out.println(auxRod);
             if (auxRod.size() == 0) {
                 return targetRod.get(0);
             } else if (targetRod.size() == 0) {
                 return auxRod.get(0);
             } else {
-                return resolveSmallerDiscIndex(startRod.get(0),
+                return resolveSmallerDiscIndex(auxRod.get(0),
                                                targetRod.get(0));
             }
         } else if (currentRod == auxRod) {
@@ -148,11 +135,7 @@ class HanoiTower {
                                                targetRod.get(0));
             }
         } else {
-            // System.out.println("Start size: " + startRod.size());
-            // System.out.println("Start: " + startRod);
-            // System.out.println("Aux: " + auxRod);
             if (startRod.size() == 0) {
-                // System.out.println("joined here" + auxRod.get(0));
                 return auxRod.get(0);
             } else if (auxRod.size() == 0) {
                 return startRod.get(0);
@@ -183,18 +166,15 @@ class HanoiTower {
             from = oddRods;
             to = oddRods;
             move(1, discIndex, oddRods[0], oddRods[2]);
-            // move(1, oddRods[0], oddRods[2]);
         // if discsCount is pair
         } else {
             from = pairRods;
             to = pairRods;
             move(1, discIndex, pairRods[0], pairRods[2]);
-            // move(1, pairRods[0], pairRods[2]);
         }
 
         movimentsCount = (int) Math.pow(2, discsCount) - 1;
 
-        // System.out.println(movimentsCount);
         for (int step = 2; step <= movimentsCount; step++) {
             discIndex = resolveDiscIndex(currentRod);
 
@@ -205,12 +185,6 @@ class HanoiTower {
                 indexFrom = (step + 1)%3;
                 indexTo = (step - 1)%3;
             }
-            // System.out.println("Step " + step);
-            // System.out.println("disc " + discIndex);
-
-
-            // System.out.println("de " + indexFrom);
-            // System.out.println("para " + indexTo);
 
             move(step, discIndex, from[indexFrom], to[indexTo]);
         }
