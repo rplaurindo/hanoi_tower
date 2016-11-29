@@ -1,4 +1,4 @@
-public class Movement {
+class Movement {
     private Integer step = 1;
     private Integer disc = 1;
     private Character origin = 'A';

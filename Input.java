@@ -1,7 +1,7 @@
 // for don’t need call the complete naming of the class "Scanner"
 import java.util.Scanner;
 
-public class Input {
+class Input {
     public String keyboard(String label) {
         System.out.print(label);
         Scanner input = new Scanner(System.in);
