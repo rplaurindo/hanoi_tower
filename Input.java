@@ -1,4 +1,4 @@
-// for don’t need call the complete naming of the class "Scanner"
+// for don’t need call the as fully named class for the class "Scanner"
 import java.util.Scanner;
 
 class Input {
