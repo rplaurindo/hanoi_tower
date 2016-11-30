@@ -1,13 +1,13 @@
 class Movement {
     private Integer step = 1;
-    private Integer disc = 1;
+    private Integer disk = 1;
     private Character origin = 'A';
     private Character destination = 'A';
 
     // constructor
-    Movement(int step, int discIndex, Character origin, Character destination) {
+    Movement(int step, int diskIndex, Character origin, Character destination) {
         this.step = step;
-        this.disc = discIndex;
+        this.disk = diskIndex;
         this.origin = origin;
         this.destination = destination;
     }
@@ -16,8 +16,8 @@ class Movement {
         return this.step;
     }
 
-    public Integer disc() {
-        return this.disc;
+    public Integer disk() {
+        return this.disk;
     }
 
     public Character origin() {

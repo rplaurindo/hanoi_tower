@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class HanoiTower {
-    private Integer discsCount = 0;
+    private Integer disksCount = 0;
 
     private Character oddRods[] = {'A', 'B', 'C'};
     private Character pairRods[] = {'A', 'C', 'B'};
@@ -13,19 +13,19 @@ public class HanoiTower {
 
     private ArrayList<Movement> movementsList = new ArrayList<Movement>();
 
-    HanoiTower(Integer discsCount) {
-        this.discsCount = discsCount;
+    HanoiTower(Integer disksCount) {
+        this.disksCount = disksCount;
     }
 
     private Integer movimentsCount = 0;
 
     private void prepare() {
-        for (int i = 0; i < discsCount; i++) {
+        for (int i = 0; i < disksCount; i++) {
             startRod.add(i + 1);
         }
     }
 
-    private void move(int step, int discIndex, char origin, char destination) {
+    private void move(int step, int diskIndex, char origin, char destination) {
         ArrayList<Integer> destinationRod = new ArrayList<Integer>();
         ArrayList<Integer> originRod = new ArrayList<Integer>();
 
@@ -50,26 +50,26 @@ public class HanoiTower {
 
         originRod.remove(originRod.get(0));
 
-        Movement movement = new Movement(step, discIndex, origin, destination);
+        Movement movement = new Movement(step, diskIndex, origin, destination);
         movementsList.add(movement);
     }
 
-    private int resolveSmallerDiscIndex (int discIndex1, int discIndex2) {
-        if (discIndex1 < discIndex2) {
-            return discIndex1;
+    private int resolveSmallerDiskIndex (int diskIndex1, int diskIndex2) {
+        if (diskIndex1 < diskIndex2) {
+            return diskIndex1;
         } else {
-            return discIndex2;
+            return diskIndex2;
         }
     }
 
-    private int resolveDiscIndex (ArrayList<Integer> currentRod) {
+    private int resolveDiskIndex (ArrayList<Integer> currentRod) {
         if (currentRod == startRod) {
             if (auxRod.size() == 0) {
                 return targetRod.get(0);
             } else if (targetRod.size() == 0) {
                 return auxRod.get(0);
             } else {
-                return resolveSmallerDiscIndex(auxRod.get(0),
+                return resolveSmallerDiskIndex(auxRod.get(0),
                                                targetRod.get(0));
             }
         } else if (currentRod == auxRod) {
@@ -78,7 +78,7 @@ public class HanoiTower {
             } else if (targetRod.size() == 0) {
                 return startRod.get(0);
             } else {
-                return resolveSmallerDiscIndex(startRod.get(0),
+                return resolveSmallerDiskIndex(startRod.get(0),
                                                targetRod.get(0));
             }
         } else {
@@ -87,7 +87,7 @@ public class HanoiTower {
             } else if (auxRod.size() == 0) {
                 return startRod.get(0);
             } else {
-                return resolveSmallerDiscIndex(startRod.get(0),
+                return resolveSmallerDiskIndex(startRod.get(0),
                                                auxRod.get(0));
             }
         }
@@ -99,7 +99,7 @@ public class HanoiTower {
     }
 
     public void run() {
-        int discIndex = 1;
+        int diskIndex = 1;
         int originIndex = 0;
         int destinationIndex = 0;
         Character origin[] = new Character[3];
@@ -113,24 +113,24 @@ public class HanoiTower {
         // System.out.println("Step 1");
 
         // first movement
-        // if discsCount is odd
-        if (discsCount % 2 != 0) {
+        // if disksCount is odd
+        if (disksCount % 2 != 0) {
             origin = oddRods;
             destination = oddRods;
-            move(1, discIndex, oddRods[0], oddRods[2]);
-        // if discsCount is pair
+            move(1, diskIndex, oddRods[0], oddRods[2]);
+        // if disksCount is pair
         } else {
             origin = pairRods;
             destination = pairRods;
-            move(1, discIndex, pairRods[0], pairRods[2]);
+            move(1, diskIndex, pairRods[0], pairRods[2]);
         }
 
-        movimentsCount = (int) Math.pow(2, discsCount) - 1;
+        movimentsCount = (int) Math.pow(2, disksCount) - 1;
 
         for (int step = 2; step <= movimentsCount; step++) {
-            discIndex = resolveDiscIndex(currentRod);
+            diskIndex = resolveDiskIndex(currentRod);
 
-            if (discIndex % 2 != 0) {
+            if (diskIndex % 2 != 0) {
                 originIndex = (step - 1)%3;
                 destinationIndex = (step + 1)%3;
             } else {
@@ -143,7 +143,7 @@ public class HanoiTower {
             // System.out.println("Target rod: " + targetRod);
             // System.out.println("Step: " + step);
 
-            move(step, discIndex, origin[originIndex],
+            move(step, diskIndex, origin[originIndex],
                  destination[destinationIndex]);
         }
 
