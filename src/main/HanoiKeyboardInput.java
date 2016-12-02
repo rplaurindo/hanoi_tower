@@ -1,7 +1,7 @@
 public class HanoiKeyboardInput {
     public int catchInteger() {
         Input input = new Input();
-        String stringIn = input.keyboard("Digite a quantidade de  discos: ");
+        String stringIn = input.keyboard("Digite a quantidade de  discos: ", false);
         int intInput = 0;
 
         try {

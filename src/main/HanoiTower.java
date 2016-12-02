@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class HanoiTower {
-    private Integer disksCount = 0;
+    private int disksCount = 0;
 
-    private Character oddRods[] = {'A', 'B', 'C'};
-    private Character pairRods[] = {'A', 'C', 'B'};
+    private char oddRods[] = {'A', 'B', 'C'};
+    private char pairRods[] = {'A', 'C', 'B'};
 
     private ArrayList<Integer> startRod = new ArrayList<Integer>();
     private ArrayList<Integer> auxRod = new ArrayList<Integer>();
@@ -102,8 +102,8 @@ public class HanoiTower {
         int diskIndex = 1;
         int originIndex = 0;
         int destinationIndex = 0;
-        Character origin[] = new Character[3];
-        Character destination[] = new Character[3];
+        char origin[] = new char[3];
+        char destination[] = new char[3];
 
         prepare();
 
