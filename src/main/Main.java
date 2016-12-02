@@ -1,4 +1,7 @@
+package main;
+
 class Main {
+    
     public static void main(String[] args) {
         HanoiKeyboardInput input = new HanoiKeyboardInput();
         int disksCount = input.catchInteger();
@@ -13,4 +16,5 @@ class Main {
                                );
         }
     }
+    
 }

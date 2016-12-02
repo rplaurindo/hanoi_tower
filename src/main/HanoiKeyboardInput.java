@@ -1,3 +1,7 @@
+package main;
+
+import br.com.home_labs.io.console.Input;
+
 public class HanoiKeyboardInput {
     public int catchInteger() {
         Input input = new Input();

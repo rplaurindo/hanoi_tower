@@ -1,30 +1,32 @@
+package main;
+
 class Movement {
-    private Integer step = 1;
-    private Integer disk = 1;
-    private Character origin = 'A';
-    private Character destination = 'A';
+    private int step = 1;
+    private int disk = 1;
+    private char origin = 'A';
+    private char destination = 'A';
 
     // constructor
-    Movement(int step, int diskIndex, Character origin, Character destination) {
+    Movement(int step, int diskIndex, char origin, char destination) {
         this.step = step;
         this.disk = diskIndex;
-        this.origin = origin;
-        this.destination = destination;
+        this.origin = (Character) origin;
+        this.destination = (char) destination;
     }
 
     public int step() {
         return this.step;
     }
 
-    public Integer disk() {
+    public int disk() {
         return this.disk;
     }
 
-    public Character origin() {
+    public char origin() {
         return this.origin;
     }
 
-    public Character destination() {
+    public char destination() {
         return this.destination;
     }
 }
