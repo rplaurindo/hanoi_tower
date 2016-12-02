@@ -3,7 +3,7 @@ package main;
 class Main {
     
     public static void main(String[] args) {
-        HanoiKeyboardInput input = new HanoiKeyboardInput();
+        Input input = new Input();
         int disksCount = input.catchInteger();
         HanoiTower h = new HanoiTower(disksCount);
         h.run();
