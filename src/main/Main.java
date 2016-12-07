@@ -10,7 +10,7 @@ class Main {
 
         for (Movement movement : h.movements()) {
             System.out.println("Movimento " + movement.step() + ": " +
-                               "mova o disko " + movement.disk() +
+                               "mova o disco " + movement.disk() +
                                " da haste " + movement.origin() +
                                " para a haste " + movement.destination()
                                );
