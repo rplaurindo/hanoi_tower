@@ -8,6 +8,7 @@ class Movement {
 
     // constructor
     Movement(int step, int diskIndex, char origin, char destination) {
+//    Movement(int step, Disk disk, Rod origin, Rod destination) {
         this.step = step;
         this.disk = diskIndex;
         this.origin = (Character) origin;
