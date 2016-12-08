@@ -15,7 +15,7 @@ public class HanoiTower {
 
     private ArrayList<Movement> movementsList = new ArrayList<Movement>();
 
-    HanoiTower(Integer disksCount) {
+    HanoiTower(int disksCount) {
         this.disksCount = disksCount;
     }
 

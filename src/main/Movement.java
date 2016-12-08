@@ -3,8 +3,8 @@ package main;
 class Movement {
     private int step = 1;
     private int disk = 1;
-    private char origin = 'A';
-    private char destination = 'A';
+    private char origin;
+    private char destination;
 
     // constructor
     Movement(int step, int diskIndex, char origin, char destination) {
