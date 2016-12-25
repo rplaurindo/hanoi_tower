@@ -13,26 +13,19 @@ import java.util.ArrayList;
 
 public class HanoiTower {
     
-    private int disksCount = 0;
-
-    private char oddRods[] = {'A', 'B', 'C'};
-    private char pairRods[] = {'A', 'C', 'B'};
-    private char rod[] = new char[3];
-
-    private ArrayList<Disk> startRod = new ArrayList<Disk>();
-    private ArrayList<Disk> auxRod = new ArrayList<Disk>();
-    private ArrayList<Disk> targetRod = new ArrayList<Disk>();
-    private ArrayList<Disk> currentRod = startRod;
-
-    private ArrayList<Movement> movementsList = new ArrayList<Movement>();
-
     HanoiTower(int disksCount) {
         this.disksCount = disksCount;
         
         prepare();
     }
-
-    private Integer movimentsCount = 0;
+    
+    private int disksCount = 0;
+    private int movimentsCount = 0;
+    private ArrayList<Disk> startRod = new ArrayList<Disk>();
+    private ArrayList<Disk> auxRod = new ArrayList<Disk>();
+    private ArrayList<Disk> targetRod = new ArrayList<Disk>();
+    private ArrayList<Disk> currentRod = startRod;
+    private ArrayList<Movement> movementsList = new ArrayList<Movement>();
 
     private void prepare() {
         for (int i = 0; i < disksCount; i++) {
@@ -120,6 +113,10 @@ public class HanoiTower {
     }
 
     public void run() {
+        char oddRods[] = {'A', 'B', 'C'};
+        char pairRods[] = {'A', 'C', 'B'};
+        char rod[] = new char[3];
+        
         Disk disk = startRod.get(0);
         int originIndex = 0;
         int destinationIndex = 0;
