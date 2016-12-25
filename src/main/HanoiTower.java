@@ -2,34 +2,47 @@ package main;
 
 import java.util.ArrayList;
 
+//public class HanoiTower implements Comparable {
+//    private Disk compareTo(Disk disk1, Disk disk2) {
+//        if (disk1.index() < disk2.index()) {
+//            return disk1;
+//        } else {
+//            return disk2;
+//        }
+//    }
+
 public class HanoiTower {
+    
     private int disksCount = 0;
 
     private char oddRods[] = {'A', 'B', 'C'};
     private char pairRods[] = {'A', 'C', 'B'};
+    private char rod[] = new char[3];
 
-    private ArrayList<Integer> startRod = new ArrayList<Integer>();
-    private ArrayList<Integer> auxRod = new ArrayList<Integer>();
-    private ArrayList<Integer> targetRod = new ArrayList<Integer>();
-    private ArrayList<Integer> currentRod = startRod;
+    private ArrayList<Disk> startRod = new ArrayList<Disk>();
+    private ArrayList<Disk> auxRod = new ArrayList<Disk>();
+    private ArrayList<Disk> targetRod = new ArrayList<Disk>();
+    private ArrayList<Disk> currentRod = startRod;
 
     private ArrayList<Movement> movementsList = new ArrayList<Movement>();
 
     HanoiTower(int disksCount) {
         this.disksCount = disksCount;
+        
+        prepare();
     }
 
     private Integer movimentsCount = 0;
 
     private void prepare() {
         for (int i = 0; i < disksCount; i++) {
-            startRod.add(i + 1);
+            startRod.add(new Disk(i + 1));
         }
     }
 
-    private void move(int step, int diskIndex, char origin, char destination) {
-        ArrayList<Integer> destinationRod = new ArrayList<Integer>();
-        ArrayList<Integer> originRod = new ArrayList<Integer>();
+    private void move(int step, Disk disk, char origin, char destination) {
+        ArrayList<Disk> destinationRod = new ArrayList<Disk>();
+        ArrayList<Disk> originRod = new ArrayList<Disk>();
 
         switch (origin) {
             case 'A': originRod = startRod;
@@ -47,31 +60,37 @@ public class HanoiTower {
             default: destinationRod = targetRod;
         }
 
+        // FIFO - first-in, first-out
+        // não está corretamente abstraído, porque uma torre é uma LIFO (pilha), onde o último a entrar, é o primeiro a sair
+//        System.out.println(destinationRod.get(0));
         destinationRod.add(0, originRod.get(0));
         currentRod = destinationRod;
 
         originRod.remove(originRod.get(0));
 
-        Movement movement = new Movement(step, diskIndex, origin, destination);
+        Movement movement = new Movement(step, disk, origin, destination);
         movementsList.add(movement);
     }
 
-    private int resolveSmallerDiskIndex (int diskIndex1, int diskIndex2) {
-        if (diskIndex1 < diskIndex2) {
-            return diskIndex1;
-        } else {
-            return diskIndex2;
-        }
+    private Disk resolveSmallerDisk(Disk disk1, Disk disk2) {
+        if (disk1.index() < disk2.index()) {
+          return disk1;
+      } else {
+          return disk2;
+      }
     }
 
-    private int resolveDiskIndex (ArrayList<Integer> currentRod) {
+    private Disk resolveDisk (ArrayList<Disk> currentRod) {
+        
         if (currentRod == startRod) {
-            if (auxRod.size() == 0) {
+            if (auxRod.size() == 0 && targetRod.size() == 0) {
+                return startRod.get(0);
+            } else if (auxRod.size() == 0) {
                 return targetRod.get(0);
             } else if (targetRod.size() == 0) {
                 return auxRod.get(0);
             } else {
-                return resolveSmallerDiskIndex(auxRod.get(0),
+                return resolveSmallerDisk(auxRod.get(0),
                                                targetRod.get(0));
             }
         } else if (currentRod == auxRod) {
@@ -80,7 +99,7 @@ public class HanoiTower {
             } else if (targetRod.size() == 0) {
                 return startRod.get(0);
             } else {
-                return resolveSmallerDiskIndex(startRod.get(0),
+                return resolveSmallerDisk(startRod.get(0),
                                                targetRod.get(0));
             }
         } else {
@@ -89,7 +108,7 @@ public class HanoiTower {
             } else if (auxRod.size() == 0) {
                 return startRod.get(0);
             } else {
-                return resolveSmallerDiskIndex(startRod.get(0),
+                return resolveSmallerDisk(startRod.get(0),
                                                auxRod.get(0));
             }
         }
@@ -101,38 +120,27 @@ public class HanoiTower {
     }
 
     public void run() {
-        int diskIndex = 1;
+        Disk disk = startRod.get(0);
         int originIndex = 0;
         int destinationIndex = 0;
         char origin[] = new char[3];
         char destination[] = new char[3];
 
-        prepare();
-
-        // System.out.println("Start rod: " + startRod);
-        // System.out.println("Auxiliary rod: " + auxRod);
-        // System.out.println("Target rod: " + targetRod);
-        // System.out.println("Step 1");
-
-        // first movement
-        // if disksCount is odd
         if (disksCount % 2 != 0) {
-            origin = oddRods;
-            destination = oddRods;
-            move(1, diskIndex, oddRods[0], oddRods[2]);
-        // if disksCount is pair
+            rod = oddRods;
         } else {
-            origin = pairRods;
-            destination = pairRods;
-            move(1, diskIndex, pairRods[0], pairRods[2]);
+            rod = pairRods;
         }
-
+        
+        origin = rod;
+        destination = rod;
         movimentsCount = (int) Math.pow(2, disksCount) - 1;
 
-        for (int step = 2; step <= movimentsCount; step++) {
-            diskIndex = resolveDiskIndex(currentRod);
-
-            if (diskIndex % 2 != 0) {
+        for (int step = 1; step <= movimentsCount; step++) {
+            
+            disk = resolveDisk(currentRod);
+            
+            if (disk.index() % 2 != 0) {
                 originIndex = (step - 1)%3;
                 destinationIndex = (step + 1)%3;
             } else {
@@ -140,18 +148,14 @@ public class HanoiTower {
                 destinationIndex = (step - 1)%3;
             }
 
-            // System.out.println("Start rod: " + startRod);
-            // System.out.println("Auxiliary rod: " + auxRod);
-            // System.out.println("Target rod: " + targetRod);
-            // System.out.println("Step: " + step);
-
-            move(step, diskIndex, origin[originIndex],
+//            System.out.println("Step: " + step);
+//            System.out.println("Origin Rod: " + origin[originIndex]);
+//            System.out.println("Destination Rod: " + destination[destinationIndex]);
+            
+            move(step, disk, origin[originIndex],
                  destination[destinationIndex]);
         }
 
-        // System.out.println("Start rod: " + startRod);
-        // System.out.println("Auxiliary rod: " + auxRod);
-        // System.out.println("Target rod: " + targetRod);
     }
 
 }
