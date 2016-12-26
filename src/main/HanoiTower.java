@@ -2,15 +2,6 @@ package main;
 
 import java.util.ArrayList;
 
-//public class HanoiTower implements Comparable {
-//    private Disk compareTo(Disk disk1, Disk disk2) {
-//        if (disk1.index() < disk2.index()) {
-//            return disk1;
-//        } else {
-//            return disk2;
-//        }
-//    }
-
 public class HanoiTower {
     
     HanoiTower(int disksCount) {

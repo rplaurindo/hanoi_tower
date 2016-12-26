@@ -14,7 +14,7 @@ class Main {
                                "mova o disco " + movement.disk().index() +
                                " da haste " + movement.origin() +
                                " para a haste " + movement.destination()
-                               );
+                              );
         }
     }
     
